@@ -8,7 +8,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import RadialGradientBackground from '../../assets/svgs/radialGradient';
+import RadialGradientBackground from '../assets/svgs/radialGradient';
 
 interface SignInParams {
   username: string;
@@ -69,7 +69,7 @@ export function SignInScreen({
           alignItems: 'center',
         }}>
         <Image
-          source={require('../../assets/cat.png')}
+          source={require('../assets/images/cat.png')}
           style={{width: 400, marginBottom: 20}}
         />
         <TextInput

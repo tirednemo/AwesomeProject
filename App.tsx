@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { NavigationContainer } from '@react-navigation/native';
 import React, { useEffect } from 'react';
-import { HomeScreen } from './src/navigator/homeScreen';
+import { HomeScreen } from './src/navigations/app-navigator';
 import { SignInScreen } from './src/screens/signInScreen';
 
 function App() {

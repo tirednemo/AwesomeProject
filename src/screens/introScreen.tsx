@@ -25,7 +25,7 @@ const IntroScreen = ({navigation}: {navigation: DrawerNavigationProp<any>}) => {
   return (
     <ScrollView style={{padding: 10}}>
       <Image
-        source={require('../../assets/cat.png')}
+        source={require('../assets/images/cat.png')}
         style={{marginBottom: 20, width: 150, height: 150, alignSelf: 'center'}}
       />
       <View style={{alignItems: 'center', gap: 10}}>
