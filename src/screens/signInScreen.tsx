@@ -1,5 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import React from 'react';
 import {
   Image,
@@ -9,8 +9,9 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
 import RadialGradientBackground from '../assets/svgs/radialGradient';
-import { connectToDatabase } from '../db/db';
+import {connectToDatabase} from '../db/db';
 
 interface SignInParams {
   username: string;
@@ -80,7 +81,7 @@ export function SignInScreen({
         }}>
         <Image
           source={require('../assets/images/cat.png')}
-          style={{width: 400, marginBottom: 20}}
+          style={{width: 450, height: 450, marginBottom: 20}}
         />
         <TextInput
           placeholder="Username"
@@ -122,6 +123,22 @@ export function SignInScreen({
           onPress={() => navigation.navigate('SignUp')}>
           Don't have an account? Register
         </Text>
+        <View style={{flexDirection: 'row', marginVertical: 20}}>
+          <Text
+            style={{
+              fontFamily: 'PatrickHand-Regular',
+              fontSize: 20,
+              marginRight: 10,
+            }}>
+            Or sign in with
+          </Text>
+          <TouchableOpacity style={{marginRight: 10}}>
+            <Icon name="logo-google" size={30} />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Icon name="logo-reddit" size={30} />
+          </TouchableOpacity>
+        </View>
       </View>
     </View>
   );
