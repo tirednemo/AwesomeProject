@@ -5,7 +5,7 @@ import {signOut} from '../screens/signInScreen';
 
 const Drawer = createDrawerNavigator();
 
-export function HomeScreen({
+export function AppNavigator({
   setIsLoggedIn,
 }: {
   setIsLoggedIn: (isLoggedIn: boolean) => void;

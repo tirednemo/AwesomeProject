@@ -2,7 +2,7 @@ import { DrawerNavigationProp } from '@react-navigation/drawer';
 import React from 'react';
 import { FlatList, StyleSheet, Text, View } from 'react-native';
 
-const FoodScreen = ({navigation, route}: {navigation: DrawerNavigationProp<any>; route: {params?: {name: string}}}) => {
+const FoodScreen = ({navigation, route}: {navigation: DrawerNavigationProp<any>; route: any}) => {
   const name = route.params ? route.params.name : 'Cat';
   return (
     <View style={styles.container}>

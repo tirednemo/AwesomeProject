@@ -2,7 +2,7 @@
   "migIndex": 1,
   "data": [
     {
-      "path": "assets/fonts/PatrickHand-Regular.ttf",
+      "path": "src/assets/fonts/PatrickHand-Regular.ttf",
       "sha1": "8e9d9952d4f107775141b5ae00eeb3cac3a19d46"
     }
   ]

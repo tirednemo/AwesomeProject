@@ -1,4 +1,5 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import {
   Image,
@@ -9,6 +10,7 @@ import {
   View,
 } from 'react-native';
 import RadialGradientBackground from '../assets/svgs/radialGradient';
+import { connectToDatabase } from '../db/db';
 
 interface SignInParams {
   username: string;
@@ -21,14 +23,20 @@ export async function signIn({
   password,
   setIsLoggedIn,
 }: SignInParams): Promise<boolean> {
-  if (username === 'user' && password === 'password') {
-    try {
+  const query = `
+    SELECT * FROM Users
+    WHERE name = ? AND password = ?
+  `;
+  try {
+    const db = await connectToDatabase();
+    const results = await db.executeSql(query, [username, password]);
+    if (results[0].rows.length > 0) {
       await AsyncStorage.setItem('isLoggedIn', '1');
       setIsLoggedIn(true);
       return true;
-    } catch (e) {
-      console.error(e);
     }
+  } catch (e) {
+    console.error(e);
   }
   return false;
 }
@@ -43,8 +51,10 @@ export async function signOut(setIsLoggedIn: (isLoggedIn: boolean) => void) {
 }
 
 export function SignInScreen({
+  navigation,
   setIsLoggedIn,
 }: {
+  navigation: NativeStackNavigationProp<any>;
   setIsLoggedIn: (isLoggedIn: boolean) => void;
 }) {
   const [username, setUsername] = React.useState('');
@@ -108,7 +118,8 @@ export function SignInScreen({
             fontSize: 20,
             width: '50%',
             textAlign: 'center',
-          }}>
+          }}
+          onPress={() => navigation.navigate('SignUp')}>
           Don't have an account? Register
         </Text>
       </View>

@@ -1,9 +1,9 @@
 import React from 'react';
-import Svg, { Defs, RadialGradient, Stop, Rect } from 'react-native-svg';
-import { Dimensions } from 'react-native';
+import Svg, {Defs, RadialGradient, Rect, Stop} from 'react-native-svg';
+import {useWindowDimensions} from 'react-native';
 
 const RadialGradientBackground = () => {
-  const { width, height } = Dimensions.get('window');
+  const {width, height} = useWindowDimensions();
   const viewBox = `0 0 ${width} ${height}`;
 
   return (
