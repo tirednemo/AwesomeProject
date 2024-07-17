@@ -1,7 +1,9 @@
-import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import React, { useState } from 'react';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import React, {useState} from 'react';
 import {
   Image,
+  KeyboardAvoidingView,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
@@ -11,9 +13,9 @@ import {
 } from 'react-native';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
 import RadialGradientBackground from '../assets/svgs/radialGradient';
-import { connectToDatabase } from '../db/db';
-import { addUser } from '../db/users';
-import { User } from '../types/User';
+import {connectToDatabase} from '../db/db';
+import {addUser} from '../db/users';
+import {User} from '../types/User';
 
 interface SignUpParams {
   name: string;
@@ -63,71 +65,77 @@ export function SignUpScreen({
   };
 
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}>
-      <RadialGradientBackground />
-      <View
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          alignItems: 'center',
-        }}>
-        <Image
-          source={require('../assets/images/cat.png')}
+    <KeyboardAvoidingView
+      style={{flex: 1}}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+      enabled
+      keyboardVerticalOffset={50}>
+      <ScrollView contentContainerStyle={{flexGrow: 1}}>
+        {/* <RadialGradientBackground /> */}
+        <View
           style={{
-            marginTop: 100,
-            marginBottom: 20,
-            width: 150,
-            height: 150,
-            alignSelf: 'center',
-          }}
-        />
-        <TextInput
-          placeholder="Username"
-          value={name}
-          onChangeText={setUsername}
-          style={styles.interactable}
-        />
-        <TextInput
-          placeholder="Email"
-          value={email}
-          onChangeText={setEmail}
-          style={styles.interactable}
-        />
-        <TextInput
-          placeholder="Password"
-          value={password}
-          onChangeText={setPassword}
-          secureTextEntry
-          style={styles.interactable}
-        />
-        <View style={styles.checkboxContainer}>
-          <BouncyCheckbox
-            onPress={() => {
-              setAcceptTerms(!acceptTerms);
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            alignItems: 'center',
+          }}>
+          <Image
+            source={require('../assets/images/cat.png')}
+            style={{
+              marginTop: 100,
+              marginBottom: 20,
+              width: 150,
+              height: 150,
+              alignSelf: 'center',
             }}
           />
-          <Text style={styles.label}>Accept Terms & Conditions</Text>
+          <TextInput
+            placeholder="Username"
+            value={name}
+            onChangeText={setUsername}
+            style={styles.interactable}
+          />
+          <TextInput
+            placeholder="Email"
+            value={email}
+            onChangeText={setEmail}
+            style={styles.interactable}
+          />
+          <TextInput
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry
+            style={styles.interactable}
+          />
+          <View style={styles.checkboxContainer}>
+            <BouncyCheckbox
+              onPress={() => {
+                setAcceptTerms(!acceptTerms);
+              }}
+            />
+            <Text style={styles.label}>Accept Terms & Conditions</Text>
+          </View>
+          <TouchableOpacity
+            disabled={!acceptTerms}
+            onPress={handleSignUp}
+            style={[styles.button, {marginTop: 50, marginBottom: 100}]}>
+            <Text style={styles.buttonText}>Sign Up</Text>
+          </TouchableOpacity>
+          <Text
+            style={{
+              fontFamily: 'PatrickHand-Regular',
+              fontSize: 20,
+              textAlign: 'center',
+            }}
+            onPress={() => navigation.navigate('SignIn')}>
+            Already have an account? Login
+          </Text>
         </View>
-        <TouchableOpacity
-          disabled={!acceptTerms}
-          onPress={handleSignUp}
-          style={[styles.button, {marginTop: 50, marginBottom: 100}]}>
-          <Text style={styles.buttonText}>Sign Up</Text>
-        </TouchableOpacity>
-        <Text
-          style={{
-            fontFamily: 'PatrickHand-Regular',
-            fontSize: 20,
-            textAlign: 'center',
-          }}
-          onPress={() => navigation.navigate('SignIn')}>
-          Already have an account? Login
-        </Text>
-      </View>
-    </ScrollView>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 }
 
