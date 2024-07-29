@@ -1,10 +1,52 @@
-import { DrawerNavigationProp } from '@react-navigation/drawer';
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import {SectionList, StyleSheet, Text, View} from 'react-native';
 
-const RoutineScreen = ({navigation, route}: {navigation: DrawerNavigationProp<any>; route: any}) => {
+const RoutineScreen = () => {
   return (
     <View style={styles.container}>
+      <SectionList
+        sections={[
+          {
+            title: '🐱 Morning Meow Madness',
+            data: [
+              '🥣 Chow time! Breakfast feast.',
+              '🚽 Litter box cleanup extravaganza!',
+              '🎾 Epic toy battle - defeat the laser pointer!',
+              '💧 Water bowl refill and splash party.',
+            ],
+          },
+          {
+            title: '🌞 Afternoon Zzz Zone',
+            data: [
+              '🛁 Pamper paws: grooming session',
+              '🧶 Interactive playtime - fetch the feather!',
+              '😴 Short nap - recharge those kitty batteries.',
+            ],
+          },
+          {
+            title: '🌜 Evening Entertainment',
+            data: [
+              '🍽️ Dinner time - gourmet delights!',
+              '🕵️‍♂️ Evening play session - hunt the shadow!',
+              '❤️ Cuddle time - purr and purr!',
+              '🛏️ Prepare for bedtime - snuggle into the blanket.',
+            ],
+          },
+          {
+            title: '🌙 Nighty Night',
+            data: [
+              '🚪 Final bathroom check - all clear!',
+              '💧 Water bowl freshen-up - sip and snooze.',
+              '🌌 Quiet time and purrfect rest.',
+            ],
+          },
+        ]}
+        renderSectionHeader={({section}) => (
+          <Text style={styles.sectionHeader}>{section.title}</Text>
+        )}
+        renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+        keyExtractor={item => `basicListEntry-${item}`}
+      />
     </View>
   );
 };
@@ -21,7 +63,8 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'PatrickHand-Regular',
     fontSize: 24,
-    marginBottom: 20,
+    marginVertical: 20,
+    color: 'black',
   },
   item: {
     padding: 10,
