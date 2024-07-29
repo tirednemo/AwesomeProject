@@ -1,5 +1,5 @@
-import { DrawerNavigationProp } from '@react-navigation/drawer';
-import React, { useState } from 'react';
+import {DrawerNavigationProp} from '@react-navigation/drawer';
+import React, {useState} from 'react';
 import {
   Image,
   ScrollView,
@@ -8,7 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-
+import {useDispatch, useSelector} from 'react-redux';
+import {decrement, increment, selectCount} from '../redux/counterSlice';
 
 const getFullName = (
   firstName: string,
@@ -19,6 +20,8 @@ const getFullName = (
 };
 
 const IntroScreen = ({navigation}: {navigation: DrawerNavigationProp<any>}) => {
+  const count = useSelector(selectCount);
+  const dispatch = useDispatch();
   const [nickname, setNickname] = useState('Spot');
   const [isHungry, setIsHungry] = useState(true);
 
@@ -77,7 +80,7 @@ const IntroScreen = ({navigation}: {navigation: DrawerNavigationProp<any>}) => {
           .join(' ')}
       </Text> */}
 
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => navigation.navigate('Food', {name: nickname})}
           style={{
             backgroundColor: '#FF8A00',
@@ -91,7 +94,56 @@ const IntroScreen = ({navigation}: {navigation: DrawerNavigationProp<any>}) => {
               fontSize: 20,
               color: 'white',
             }}>{`See what ${nickname} likes`}</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
+
+        <View
+          style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+          <Image
+            source={require('../assets/images/needycat.png')}
+            style={{
+              width: 230,
+              height: 230,
+            }}
+          />
+          <View style={{flexDirection: 'column', gap: 5}}>
+            <TouchableOpacity
+              onPress={() => dispatch(decrement())}
+              style={{
+                backgroundColor: '#FF8A00',
+                borderRadius: 10,
+                padding: 10,
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'PatrickHand-Regular',
+                  fontSize: 20,
+                  color: 'white',
+                }}>{`Pinch ${nickname}`}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => dispatch(increment())}
+              style={{
+                backgroundColor: '#FF8A00',
+                borderRadius: 10,
+                padding: 10,
+                alignItems: 'center',
+              }}>
+              <Text
+                style={{
+                  fontFamily: 'PatrickHand-Regular',
+                  fontSize: 20,
+                  color: 'white',
+                }}>{`Pet ${nickname}`}</Text>
+            </TouchableOpacity>
+            <Text
+              style={{
+                fontFamily: 'PatrickHand-Regular',
+                fontSize: 20,
+                marginTop: 10,
+              }}>{`Friendship: ${count}`}</Text>
+          </View>
+        </View>
       </View>
     </ScrollView>
   );

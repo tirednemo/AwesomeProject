@@ -5,6 +5,8 @@ import {connectToDatabase, createTables} from './src/db/db';
 import {AppNavigator} from './src/navigations/app-navigator';
 import {AuthNavigator} from './src/navigations/auth-navigator';
 import authContext from './src/utils/authContext';
+import {Provider} from 'react-redux';
+import store from './src/redux/store';
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
@@ -38,7 +40,13 @@ function App() {
   return (
     <NavigationContainer>
       <authContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
-        {isLoggedIn ? <AppNavigator /> : <AuthNavigator />}
+        {isLoggedIn ? (
+          <Provider store={store}>
+            <AppNavigator />
+          </Provider>
+        ) : (
+          <AuthNavigator />
+        )}
       </authContext.Provider>
     </NavigationContainer>
   );
