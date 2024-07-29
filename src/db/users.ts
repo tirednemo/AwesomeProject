@@ -3,7 +3,7 @@ import {User} from '../types/User';
 
 export const addUser = async (db: SQLiteDatabase, user: User) => {
   const insertQuery = `
-     INSERT INTO Users (email, name, password)
+     INSERT INTO Users (name, email, password)
      VALUES (?, ?, ?)
    `;
   const values = [user.name, user.email, user.password];
