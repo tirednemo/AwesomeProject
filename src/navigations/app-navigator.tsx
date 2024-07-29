@@ -4,14 +4,12 @@ import IntroScreen from '../screens/introScreen';
 import {signOut} from '../screens/signInScreen';
 import AlarmScreen from '../screens/alarmScreen';
 import RoutineScreen from '../screens/routineScreen';
+import { useContext } from 'react';
+import authContext from '../utils/authContext';
 
 const Drawer = createDrawerNavigator();
 
-export function AppNavigator({
-  setIsLoggedIn,
-}: {
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
-}) {
+export function AppNavigator() {
   return (
     <Drawer.Navigator initialRouteName="Feed">
       <Drawer.Screen
@@ -36,18 +34,15 @@ export function AppNavigator({
       />
       <Drawer.Screen
         name="Signout"
-        children={() => <SignOutComponent setIsLoggedIn={setIsLoggedIn} />}
+        children={() => <SignOutComponent />}
         options={{drawerLabel: 'Signout'}}
       />
     </Drawer.Navigator>
   );
 }
 
-const SignOutComponent = ({
-  setIsLoggedIn,
-}: {
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
-}) => {
+const SignOutComponent = () => {
+  const { setIsLoggedIn } = useContext(authContext);
   signOut(setIsLoggedIn);
   return <></>;
 };

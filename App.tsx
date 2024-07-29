@@ -1,26 +1,27 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { NavigationContainer } from '@react-navigation/native';
-import React, { useCallback, useEffect } from 'react';
-import { connectToDatabase, createTables } from './src/db/db';
-import { AppNavigator } from './src/navigations/app-navigator';
-import { AuthNavigator } from './src/navigations/auth-navigator';
+import {NavigationContainer} from '@react-navigation/native';
+import React, {useCallback, useEffect} from 'react';
+import {connectToDatabase, createTables} from './src/db/db';
+import {AppNavigator} from './src/navigations/app-navigator';
+import {AuthNavigator} from './src/navigations/auth-navigator';
+import authContext from './src/utils/authContext';
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean | null>(null);
+  const [isLoggedIn, setIsLoggedIn] = React.useState<boolean>(false);
 
   const loadData = useCallback(async () => {
     try {
-      const db = await connectToDatabase()
-      await createTables(db)
+      const db = await connectToDatabase();
+      await createTables(db);
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
-  }, [])
-  
+  }, []);
+
   useEffect(() => {
-    loadData()
-  }, [loadData])
-  
+    loadData();
+  }, [loadData]);
+
   useEffect(() => {
     const checkLoginStatus = async () => {
       try {
@@ -36,11 +37,9 @@ function App() {
 
   return (
     <NavigationContainer>
-      {isLoggedIn ? (
-        <AppNavigator setIsLoggedIn={setIsLoggedIn} />
-      ) : (
-        <AuthNavigator setIsLoggedIn={setIsLoggedIn} />
-      )}
+      <authContext.Provider value={{isLoggedIn, setIsLoggedIn}}>
+        {isLoggedIn ? <AppNavigator /> : <AuthNavigator />}
+      </authContext.Provider>
     </NavigationContainer>
   );
 }

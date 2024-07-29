@@ -4,18 +4,14 @@ import {SignUpScreen} from '../screens/signUpScreen';
 
 const Stack = createNativeStackNavigator();
 
-export function AuthNavigator({
-  setIsLoggedIn,
-}: {
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
-}) {
+export function AuthNavigator() {
   return (
     <Stack.Navigator
       screenOptions={{
         headerShown: false,
       }}>
       <Stack.Screen name="SignIn">
-        {props => <SignInScreen {...props} setIsLoggedIn={setIsLoggedIn} />}
+        {props => <SignInScreen {...props} />}
       </Stack.Screen>
       <Stack.Screen name="SignUp" component={SignUpScreen} />
     </Stack.Navigator>

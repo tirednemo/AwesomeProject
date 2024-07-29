@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import React from 'react';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import React, { useContext } from 'react';
 import {
   Image,
   KeyboardAvoidingView,
@@ -15,6 +15,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import RadialGradientBackground from '../assets/svgs/radialGradient';
 import {connectToDatabase} from '../db/db';
+import authContext from '../utils/authContext';
 
 interface SignInParams {
   username: string;
@@ -56,14 +57,13 @@ export async function signOut(setIsLoggedIn: (isLoggedIn: boolean) => void) {
 
 export function SignInScreen({
   navigation,
-  setIsLoggedIn,
 }: {
   navigation: NativeStackNavigationProp<any>;
-  setIsLoggedIn: (isLoggedIn: boolean) => void;
 }) {
   const [username, setUsername] = React.useState('');
   const [password, setPassword] = React.useState('');
   const [isIncorrect, setIsIncorrect] = React.useState(false);
+  const { setIsLoggedIn } = useContext(authContext);
 
   const handleSignIn = async () => {
     const success = await signIn({username, password, setIsLoggedIn});
