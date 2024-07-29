@@ -1,8 +1,20 @@
-import { DrawerNavigationProp } from '@react-navigation/drawer';
+import {DrawerNavigationProp} from '@react-navigation/drawer';
 import React from 'react';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import {
+  ActivityIndicator,
+  FlatList,
+  StyleSheet,
+  Text,
+  View,
+} from 'react-native';
 
-const FoodScreen = ({navigation, route}: {navigation: DrawerNavigationProp<any>; route: any}) => {
+const FoodScreen = ({
+  navigation,
+  route,
+}: {
+  navigation: DrawerNavigationProp<any>;
+  route: any;
+}) => {
   const name = route.params ? route.params.name : 'Cat';
   return (
     <View style={styles.container}>
@@ -29,29 +41,17 @@ const FoodScreen = ({navigation, route}: {navigation: DrawerNavigationProp<any>;
         )}
         keyExtractor={(item, index) => index.toString()}
       />
-
-      {/* <SectionList
-        sections={[
-          {title: 'D', data: ['Devin', 'Dan', 'Dominic']},
-          {
-            title: 'J',
-            data: [
-              'Jackson',
-              'James',
-              'Jillian',
-              'Jimmy',
-              'Joel',
-              'John',
-              'Julie',
-            ],
-          },
-        ]}
-        renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
-        renderSectionHeader={({section}) => (
-          <Text style={styles.sectionHeader}>{section.title}</Text>
-        )}
-        keyExtractor={item => `basicListEntry-${item}`}
-      /> */}
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text>
+          Loading more..
+          <ActivityIndicator size="small" color="#FF8A00" />
+        </Text>
+      </View>
 
       {/* <Button
         title="Go to Details... again"
