@@ -8,8 +8,8 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useDispatch, useSelector} from 'react-redux';
-import {decrement, increment, selectCount} from '../redux/counterSlice';
+import {useAppDispatch, useAppSelector} from '../utils/hooks';
+import {decrement, increment, selectCount} from '../redux/slices/counterSlice';
 
 const getFullName = (
   firstName: string,
@@ -20,8 +20,8 @@ const getFullName = (
 };
 
 const IntroScreen = ({navigation}: {navigation: DrawerNavigationProp<any>}) => {
-  const count = useSelector(selectCount);
-  const dispatch = useDispatch();
+  const count = useAppSelector(selectCount);
+  const dispatch = useAppDispatch();
   const [nickname, setNickname] = useState('Spot');
   const [isHungry, setIsHungry] = useState(true);
 
