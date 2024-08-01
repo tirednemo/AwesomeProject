@@ -1,16 +1,25 @@
-import {DrawerNavigationProp} from '@react-navigation/drawer';
-import React, {useState} from 'react';
+import { DrawerNavigationProp } from '@react-navigation/drawer';
+import React, { useEffect, useRef, useState } from 'react';
 import {
+  Animated,
   Image,
+  NativeModules,
+  Platform,
   ScrollView,
+  StyleSheet,
   Text,
   TextInput,
   TouchableOpacity,
   View,
 } from 'react-native';
-import {useAppDispatch, useAppSelector} from '../utils/hooks';
-import {decrement, increment, selectCount} from '../redux/slices/counterSlice';
+import AudioRecorderPlayer from 'react-native-audio-recorder-player';
+import Icon from 'react-native-vector-icons/Ionicons';
+import { decrement, increment, selectCount } from '../redux/slices/counterSlice';
+import { useAppDispatch, useAppSelector } from '../utils/hooks';
 
+const {VoiceChangingModule} = NativeModules;
+
+const audioRecorderPlayer = new AudioRecorderPlayer();
 const getFullName = (
   firstName: string,
   secondName: string,
@@ -24,6 +33,53 @@ const IntroScreen = ({navigation}: {navigation: DrawerNavigationProp<any>}) => {
   const dispatch = useAppDispatch();
   const [nickname, setNickname] = useState('Spot');
   const [isHungry, setIsHungry] = useState(true);
+  const [recordedAudioPath, setRecordedAudioPath] = useState('');
+  const [isRecording, setIsRecording] = useState(false);
+  const pulseAnim = useRef(new Animated.Value(1)).current;
+
+  useEffect(() => {
+    if (isRecording) {
+      Animated.loop(
+        Animated.sequence([
+          Animated.timing(pulseAnim, {
+            toValue: 1.5,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+          Animated.timing(pulseAnim, {
+            toValue: 1,
+            duration: 500,
+            useNativeDriver: true,
+          }),
+        ]),
+      ).start();
+    } else {
+      pulseAnim.setValue(1);
+    }
+  }, [isRecording]);
+
+  const audioTrackURL =
+    'https://audio-samples.github.io/samples/mp3/blizzard_unconditional/sample-1.mp3';
+
+  const startRecording = async () => {
+    setIsRecording(true);
+    const result = await audioRecorderPlayer.startRecorder();
+    setRecordedAudioPath(result);
+  };
+
+  const stopRecording = async () => {
+    setIsRecording(false);
+    const result = await audioRecorderPlayer.stopRecorder();
+    audioRecorderPlayer.removeRecordBackListener();
+    setRecordedAudioPath(result);
+    changeToChild(result);
+  };
+
+  const changeToChild = (audioPath: string) => {
+    if (Platform.OS === 'android' && audioPath) {
+      VoiceChangingModule.changeVoiceToChild(audioPath);
+    }
+  };
 
   return (
     <ScrollView style={{padding: 10}}>
@@ -60,19 +116,34 @@ const IntroScreen = ({navigation}: {navigation: DrawerNavigationProp<any>}) => {
           My full name is {getFullName('Rum', 'Tum', 'Tugger')}! Give me a
           nickname.
         </Text>
-        <TextInput
+        <View
           style={{
             height: 40,
-            borderColor: 'gray',
-            borderWidth: 1,
-            marginBottom: 20,
-            fontFamily: 'PatrickHand-Regular',
-            fontSize: 18,
-          }}
-          placeholder="Give me a nickname!"
-          onChangeText={newText => setNickname(newText)}
-          defaultValue={nickname}
-        />
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <TextInput
+            style={{
+              height: 40,
+              borderColor: 'gray',
+              borderWidth: 1,
+              fontFamily: 'PatrickHand-Regular',
+              fontSize: 18,
+            }}
+            placeholder="Give me a nickname!"
+            onChangeText={newText => setNickname(newText)}
+            defaultValue={nickname}
+          />
+          <TouchableOpacity
+            onPressIn={startRecording}
+            onPressOut={stopRecording}>
+            <Animated.View style={{transform: [{scale: pulseAnim}]}}>
+              <Icon name="mic" size={30} color="#000" />
+            </Animated.View>
+          </TouchableOpacity>
+        </View>
+
         {/* <Text style={{padding: 10, fontSize: 42}}>
         {nickname
           .split(' ')
